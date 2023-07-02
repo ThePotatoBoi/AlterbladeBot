@@ -1,9 +1,9 @@
-﻿using AlterbladeBot.Game.GameObjects;
-using AlterbladeBot.Game.GameObjects.Statuses;
+﻿using AlterbladeBot.GameLib.GameObjects;
+using AlterbladeBot.GameLib.GameObjects.Statuses;
 using DSharpPlus.SlashCommands;
 using System.Collections.Generic;
 
-namespace AlterbladeBot.Game
+namespace AlterbladeBot.GameLib
 {
 	enum Stats
 	{
@@ -80,20 +80,12 @@ namespace AlterbladeBot.Game
 		SPEED_REVERSED,
 	}
 
-	enum Heroes
+	enum PVPBattleType
 	{
-		[ChoiceName("Effelia")]
-		EFFELIA,
-		[ChoiceName("Axel")]
-		AXEL,
-		[ChoiceName("Cadeceous")]
-		CADECEOUS,
-		[ChoiceName("Huabbi")]
-		HUABBI,
-		[ChoiceName("Medea")]
-		MEDEA,
-		[ChoiceName("Volfir")]
-		VOLFIR
+		[ChoiceName("Hero vs Hero")]
+		NORMAL,
+		[ChoiceName("Team vs Team")]
+		TEAM
 	}
 
 	internal static class GameConstants
@@ -160,7 +152,7 @@ namespace AlterbladeBot.Game
 			),
 
 			new Hero(
-				"Cadeceous",
+				"Cadeceus",
 				"Plaque Doctor",
 				new Dictionary<Stats, int>()
 				{
@@ -275,5 +267,16 @@ namespace AlterbladeBot.Game
 				null
 			)
 		};
+		public static Hero? GetHeroFromName(string name)
+		{
+			for (int i = 0; i < HEROES.Count; i++)
+			{
+				if (HEROES[i].Name.ToLower() == name.ToLower())
+				{
+					return HEROES[i];
+				}
+			}
+			return null;
+		}
 	}
 }

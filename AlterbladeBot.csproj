@@ -8,12 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Game\**" />
-    <EmbeddedResource Remove="Game\**" />
-    <None Remove="Game\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="DSharpPlus" Version="4.4.1" />
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.4.1" />
     <PackageReference Include="DSharpPlus.SlashCommands" Version="4.4.1" />

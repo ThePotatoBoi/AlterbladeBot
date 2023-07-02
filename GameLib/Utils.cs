@@ -1,10 +1,10 @@
-﻿using AlterbladeBot.Game.GameObjects;
+﻿using AlterbladeBot.GameLib.GameObjects;
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 
-namespace AlterbladeBot.Game.Helpers
+namespace AlterbladeBot.GameLib
 {
 	internal static class Utils
 	{
@@ -22,7 +22,7 @@ namespace AlterbladeBot.Game.Helpers
 			isThreadSafe: true
 		);
 
-		public static void WriteLine(string text, ConsoleColor? color = null)
+		/*public static void WriteLine(string text, ConsoleColor? color = null)
 		{
 			if (color.HasValue)
 			{
@@ -127,7 +127,7 @@ namespace AlterbladeBot.Game.Helpers
 				text = text.Substring(match.Index + match.Value.Length);
 			}
 
-		}
+		}*/
 
 		#endregion
 

@@ -1,4 +1,5 @@
 ﻿using DSharpPlus;
+using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
@@ -11,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using DSharpPlus.EventArgs;
+using AlterbladeBot.BotObjects;
 
 namespace PrototypeA
 {
@@ -20,6 +22,8 @@ namespace PrototypeA
 		public InteractivityExtension Interactivity { get; private set; }
 		public SlashCommandsExtension SlashCommands { get; private set; }
 		public Config Config { get; private set; }
+
+		private static Dictionary<ulong, Game> gameInstances = new Dictionary<ulong, Game>(); 
 
 		public async Task RunAsync()
 		{
@@ -56,6 +60,27 @@ namespace PrototypeA
 		{
 			eventArgs.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource);
 			return Task.CompletedTask;
+		}
+
+		public static bool AddGameInstance(DiscordChannel channel, Game game)
+		{
+			if ( gameInstances.ContainsKey(channel.Id) ) { return false; }
+			gameInstances.Add(channel.Id, game);
+			return true;
+		}
+
+		public static bool RemoveGameInstance(DiscordChannel channel)
+		{
+			return gameInstances.Remove(channel.Id);
+		}
+
+		public static Game? GetGameInstance(DiscordChannel channel)
+		{
+			foreach(KeyValuePair<ulong, Game> instance in gameInstances)
+			{
+				if (channel.Id == instance.Key) { return instance.Value; }
+			}
+			return null;
 		}
 	}
 }
