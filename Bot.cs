@@ -2,20 +2,23 @@
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
+using DSharpPlus.EventArgs;
 using DSharpPlus.SlashCommands;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using DSharpPlus.EventArgs;
-using AlterbladeBot.BotObjects;
+using Bot.BotObjects;
 
-namespace PrototypeA
+namespace Bot
 {
+	enum PVPBattleType
+	{
+		[ChoiceName("Hero vs Hero")]
+		NORMAL,
+		[ChoiceName("Team vs Team")]
+		TEAM
+	}
+
 	internal class Bot
 	{
 		public DiscordClient Client { get; private set; }

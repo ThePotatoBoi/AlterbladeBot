@@ -4,13 +4,13 @@ using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
-using AlterbladeBot.BotHelpers;
-using AlterbladeBot.BotObjects;
-using AlterbladeBot.GameLib;
-using AlterbladeBot.GameLib.GameObjects;
-using AlterbladeBot.Commands.ChoiceProviders;
+using Bot.BotHelpers;
+using Bot.BotObjects;
+using Alterblade;
+using Alterblade.GameObjects;
+using Bot.Commands.ChoiceProviders;
 
-namespace PrototypeA.Commands
+namespace Bot.Commands
 {
 	internal class Commands : ApplicationCommandModule
 	{
@@ -21,7 +21,6 @@ namespace PrototypeA.Commands
 			[Option("user", "Select a fellow KOMRAD to battle.")] DiscordUser targetUser,
 			[Option("battletype", "What kind of battle do you want?")] PVPBattleType battleType
 		) {
-
 			DiscordInteractionResponseBuilder responseBuilder = new DiscordInteractionResponseBuilder();
 			DiscordEmbedBuilder embedBuilder = new DiscordEmbedBuilder();
 
@@ -68,27 +67,36 @@ namespace PrototypeA.Commands
 			if ( responseBuilder.Components.Count > 0 )
 			{
 				DiscordMessage msg = await ctx.GetOriginalResponseAsync();
+				DiscordFollowupMessageBuilder followup = new DiscordFollowupMessageBuilder();
 				while (true)
 				{
-					InteractivityResult<ComponentInteractionCreateEventArgs> buttonPressResult = await msg.WaitForButtonAsync();
+					InteractivityResult<ComponentInteractionCreateEventArgs> buttonPressResult = await msg.WaitForButtonAsync(TimeSpan.FromSeconds(60));
 					if (buttonPressResult.TimedOut)
 					{
 						embedBuilder = GameEmbedMaker.ErrorEmbed("Expired", "Aight... maybe next time, then?");
+						followup.AddEmbed(embedBuilder);
+						followup.IsEphemeral = true;
 						Bot.RemoveGameInstance(ctx.Channel);
+						await ctx.FollowUpAsync(followup);
 						await msg.DeleteAsync();
 						break;
 					}
 					else if (buttonPressResult.Result.User.Id != targetUser.Id)
 					{
 						embedBuilder = GameEmbedMaker.ErrorEmbed("Error", "This invitation is not for you.");
-						DiscordFollowupMessageBuilder followup = new DiscordFollowupMessageBuilder()
-							.AddEmbed(embedBuilder);
+						followup.AddEmbed(embedBuilder);
 						followup.IsEphemeral = true;
 						await ctx.FollowUpAsync(followup);
 					}
 					else
 					{
 						Game game = new Game(battleType, ctx.User, targetUser, ctx.Channel);
+						embedBuilder = new DiscordEmbedBuilder()
+							.WithColor(DiscordColor.Green)
+							.WithTitle("Invitation Accepted!")
+							.WithDescription($"{targetUser.Mention} accepted the invitation. Prepare for a match!");
+						await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embedBuilder));
+						await Task.Delay(TimeSpan.FromSeconds(4));
 						await game.StartSelection(ctx);
 						break;
 					}
@@ -107,7 +115,7 @@ namespace PrototypeA.Commands
 			DiscordEmbedBuilder embedBuilder = new DiscordEmbedBuilder();
 
 			Game? game = Bot.GetGameInstance(ctx.Channel);
-			Player? player = game?.GetPlayerFromUser(ctx.User);
+			DiscordPlayer? player = game?.GetPlayerFromUser(ctx.User);
 
 			if (game == null)
 			{

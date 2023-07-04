@@ -1,9 +1,9 @@
-﻿using AlterbladeBot.GameLib;
-using AlterbladeBot.GameLib.GameObjects;
+﻿using Alterblade;
+using Alterblade.GameObjects;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 
-namespace AlterbladeBot.Commands.ChoiceProviders
+namespace Bot.Commands.ChoiceProviders
 {
 	internal class HeroChoiceProvider : IChoiceProvider
 	{

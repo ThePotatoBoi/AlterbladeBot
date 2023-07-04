@@ -1,12 +1,12 @@
 ﻿using DSharpPlus;
 using DSharpPlus.EventArgs;
 using System.Threading.Tasks;
-using PrototypeA.Commands;
+using Bot.Commands;
 using DSharpPlus.SlashCommands;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 
-namespace PrototypeA
+namespace Bot
 {
 	internal class Program
 	{

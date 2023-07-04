@@ -14,7 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="config.json">
+    <ProjectReference Include="..\Alterblade\Alterblade.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
